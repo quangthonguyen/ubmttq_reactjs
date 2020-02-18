@@ -1,25 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import SignIn from './Component/Sign in';
+import Application from './Component/Application';
+import Notifier from './Component/Notifier/index.jsx';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
+
+// import useShallowEqualSelector from './Redux/useShallowEqualSelector';
 
 function App() {
+  // use Dispatch
+  // const dispatch = useDispatch();
+  // use Selector
+  // const user = useShallowEqualSelector(state => state.users);
+
+  const jwt = localStorage.getItem('feathers-jwt');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Notifier />
+      <Router>
+        <Switch>
+          <Route path="/signin">
+            <SignIn />
+          </Route>
+          <Route path="/">
+            <Application />
+          </Route>
+        </Switch>
+        {jwt ? <Redirect to="/" /> : <Redirect to="/signin" />}
+      </Router>
+    </>
   );
 }
 
