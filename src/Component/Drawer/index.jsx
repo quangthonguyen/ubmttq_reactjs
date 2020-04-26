@@ -27,6 +27,7 @@ import useShallowEqualSelector from '../../Redux/useShallowEqualSelector';
 import featherClient from '../../FeatherClient/FeatherConfigure';
 import { useDispatch } from 'react-redux';
 import DanhMuc from '../MUI_Table/DanhMuc';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
 const drawerWidth = 200;
 const useStyles = makeStyles(theme => ({
@@ -108,6 +109,10 @@ const useStyles = makeStyles(theme => ({
   },
   textFab: {
     marginLeft: '19px'
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff'
   }
 }));
 export default function ClippedDrawer(props) {
@@ -167,6 +172,9 @@ export default function ClippedDrawer(props) {
 
   return (
     <div>
+      <Backdrop className={classes.backdrop} open={!(user !== false)}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       {/* DialogCreateCVD */}
       <CreateCVD
         openDialogCreateCVD={openDialogCreateCVD}

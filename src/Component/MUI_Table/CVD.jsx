@@ -222,8 +222,12 @@ function CVD(props) {
                   <>
                     <div style={{ display: 'flex' }}>
                       <DetailCVDDialog detailCVD={tableMeta.rowData} />
-                      <EditCVDDialog EditCVD={tableMeta.rowData} />
-                      <DeleteCVDDialog DeleteCVD={tableMeta.rowData} />
+                      {tableMeta.rowData[12] === 'Đã gửi' && (
+                        <EditCVDDialog EditCVD={tableMeta.rowData} />
+                      )}
+                      {tableMeta.rowData[12] === 'Đã gửi' && (
+                        <DeleteCVDDialog DeleteCVD={tableMeta.rowData} />
+                      )}
                     </div>
                   </>
                 );

@@ -3,32 +3,44 @@ import { DropzoneArea } from 'material-ui-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import FeatherClient from '../../FeatherClient/FeatherConfigure';
 
-const useStyles = makeStyles(theme => ({
+// import Axios from 'axios';
+
+const useStyles = makeStyles((theme) => ({
   con: {
-    padding: '10px'
+    padding: '10px',
   },
   root: {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
-    maxWidth: '90%'
-  }
+    maxWidth: '90%',
+  },
 }));
 
 function DropzoneAreaExample(props) {
   const classes = useStyles();
 
-  const handleChange = files => {
+  const handleChange = (files) => {
     if (files[0]) {
       const reader = new FileReader();
       reader.readAsDataURL(files[0]);
       reader.addEventListener('load', () => {
+        props.setload(true);
+        // Axios.post('http://localhost:3030/uploads', {
+        //   uri: reader.result,
+        // })
+        //   .then((data) => {
+        //     console.log(data);
+        //     props.handleFileChange(files[0].name, data.id);
+        //   })
+        //   .catch((error) => console.log(error));
         FeatherClient.service('uploads')
           .create({ uri: reader.result })
-          .then(data => {
+          .then((data) => {
+            console.log(data);
             props.handleFileChange(files[0].name, data.id);
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       });
     }
   };
@@ -40,7 +52,7 @@ function DropzoneAreaExample(props) {
       showFileNamesInPreview={true}
       dropzoneText="Kéo thả file PDF hoặc click chọn file"
       previewChipProps={{
-        className: classes.root
+        className: classes.root,
       }}
       dropzoneClass={classes.con}
       onChange={handleChange.bind(this)}

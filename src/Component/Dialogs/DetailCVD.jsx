@@ -15,28 +15,28 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import useShallowEqualSelector from '../../Redux/useShallowEqualSelector';
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import FeatherClient from '../../FeatherClient/FeatherConfigure';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
+    color: theme.palette.grey[500],
+  },
 });
 
-const formatDate = str => {
+const formatDate = (str) => {
   const time = new Date(str);
   return `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()}`;
 };
 
-const DialogTitle = withStyles(styles)(props => {
+const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -54,34 +54,37 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-const DialogContent = withStyles(theme => ({
+const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
+const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
   const rowData = props.detailCVD;
 
   //use Selector
-  const listUsers = useShallowEqualSelector(state => state.listUsers);
+  const listUsers = useShallowEqualSelector((state) => state.listUsers);
   const arrayUsers = Object.values(listUsers);
   //useState file
   const [File, setFile] = React.useState(false);
+  //load
+  const [load, setload] = React.useState(false);
   //useState Open
   const [Open, setOpen] = React.useState(false);
   const handleOpen = () => {
     FeatherClient.service('uploads')
       .get(rowData[11])
-      .then(data => setFile(data.uri))
-      .catch(error => console.log(error));
+      .then((data) => setFile(data.uri))
+      .then((data) => setload(true))
+      .catch((error) => console.log(error));
     setOpen(true);
   };
   const handleClose = () => {
@@ -244,21 +247,33 @@ export default function CustomizedDialogs(props) {
                 </FormControl>
               </Grid>
               {/* File holder */}
-              <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
                 <Button style={{ width: '100%', margin: 'auto' }}>
                   <a download={rowData[10]} href={File}>
                     {rowData[10]}
                   </a>
                 </Button>
 
-                <iframe
-                  src={File}
-                  width={'100%'}
-                  height={'700px'}
-                  title={rowData[10]}
-                >
-                  <p>Your browser does not support iframes.</p>
-                </iframe>
+                {load ? (
+                  <iframe
+                    src={File}
+                    width={'100%'}
+                    height={'700px'}
+                    title={rowData[10]}
+                  >
+                    <p>Your browser does not support iframes.</p>
+                  </iframe>
+                ) : (
+                  <CircularProgress />
+                )}
               </Grid>
             </Grid>
           </DialogContent>

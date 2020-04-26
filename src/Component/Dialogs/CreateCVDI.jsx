@@ -17,21 +17,34 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Dropzone from '../DropZone';
 import useShallowEqualSelector from '../../Redux/useShallowEqualSelector';
 import { useDispatch } from 'react-redux';
+import { LinearProgress } from '@material-ui/core';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500]
-  }
+    color: theme.palette.grey[500],
+  },
 });
 
-const DialogTitle = withStyles(styles)(props => {
+const BorderLinearProgress = withStyles({
+  root: {
+    borderRadius: 20,
+    height: 15,
+    backgroundColor: 'rgba(29, 191, 4,.35)',
+  },
+  bar: {
+    borderRadius: 20,
+    backgroundColor: 'rgba(29, 180, 4,0.9)',
+  },
+})(LinearProgress);
+
+const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -49,55 +62,60 @@ const DialogTitle = withStyles(styles)(props => {
   );
 });
 
-const DialogContent = withStyles(theme => ({
+const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(2)
-  }
+    padding: theme.spacing(2),
+  },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles(theme => ({
+const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 }))(MuiDialogActions);
 
 export default function CustomizedDialogs(props) {
+  //useState
+  const [load, setload] = useState(false);
   //use Selector
-  const listUsers = useShallowEqualSelector(state => state.listUsers);
+  const listUsers = useShallowEqualSelector((state) => state.listUsers);
   const arrayUsers = Object.values(listUsers);
   //use State
   const [CreateCVDI, setCreateCVDI] = useState({});
   const handleFileChange = (fileName, fileId) => {
     setCreateCVDI({ ...CreateCVDI, fileName: fileName, fileId: fileId });
   };
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const target = event.target;
     const value = target.name === 'soVb' ? Number(target.value) : target.value;
     const name = target.name;
     setCreateCVDI({
       ...CreateCVDI,
-      [name]: value
+      [name]: value,
     });
+  };
+  //onClose
+  const closeDiag = () => {
+    setCreateCVDI({});
+    setload(false);
+    props.handleCloseDialogCreateCVDI();
   };
   //use Dispatch
   const dispatch = useDispatch();
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     dispatch({ type: 'USER_CREATE_CVDI', payload: CreateCVDI });
-    props.handleCloseDialogCreateCVDI();
+    closeDiag();
     event.preventDefault();
   };
   return (
     <div>
       <Dialog
-        onClose={props.handleCloseDialogCreateCVDI}
+        onClose={closeDiag}
         aria-labelledby="customized-dialog-title"
         open={props.openDialogCreateCVDI}
       >
-        <DialogTitle
-          id="customized-dialog-title"
-          onClose={props.handleCloseDialogCreateCVDI}
-        >
+        <DialogTitle id="customized-dialog-title" onClose={closeDiag}>
           Tạo văn bản đi
         </DialogTitle>
         <form onSubmit={handleSubmit}>
@@ -242,7 +260,36 @@ export default function CustomizedDialogs(props) {
 
               {/* fied dính kem */}
               <Grid item xs={12}>
-                <Dropzone handleFileChange={handleFileChange} />
+                <Dropzone
+                  handleFileChange={handleFileChange}
+                  setload={setload}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={
+                  load
+                    ? { visibility: 'unset', position: 'relative' }
+                    : { visibility: 'hidden', position: 'relative' }
+                }
+              >
+                <BorderLinearProgress
+                  variant={CreateCVDI.fileId ? 'determinate' : 'indeterminate'}
+                  value={100}
+                />
+                <span
+                  style={{
+                    fontSize: 'smaller',
+                    fontWeight: '500',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                >
+                  {CreateCVDI.fileId ? 'Done' : 'Uploading...'}
+                </span>
               </Grid>
             </Grid>
           </DialogContent>

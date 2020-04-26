@@ -11,8 +11,8 @@ export default function configureAppStore(preloadedState) {
     reducer: rootReducer,
     middleware: [sagaMiddleware, ...getDefaultMiddleware()],
     preloadedState,
-    enhancers: [],
-    devTools: false
+    enhancers: []
+    // devTools: false
   });
   sagaMiddleware.run(mySaga);
   if (process.env.NODE_ENV !== 'production' && module.hot) {

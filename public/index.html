@@ -24,14 +24,47 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    />
+    <!-- <script
+      src="https://code.jquery.com/jquery-2.2.3.min.js"
+      integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.1.4/core.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/feathers-client@^2.0.0/dist/feathers.js"
+    ></script> -->
+    <!-- <script>
+      const rest = feathers.rest('http://localhost:3030');
+      const app = feathers()
+        .configure(feathers.hooks())
+        .configure(rest.jquery($));
+
+      // setup jQuery to watch the ajax progress
+      $.ajaxSetup({
+        xhr: function () {
+          var xhr = new window.XMLHttpRequest();
+          // upload progress
+          xhr.addEventListener(
+            'progress',
+            function (evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = evt.loaded / evt.total;
+                console.log(
+                  'upload progress: ',
+                  Math.round(percentComplete * 100) + '%'
+                );
+              }
+            },
+            false
+          );
+          return xhr;
+        },
+      });
+    </script> -->
     <title>Ủy ban mặt trận tổ quốc quận Bình Thạnh</title>
   </head>
   <body>

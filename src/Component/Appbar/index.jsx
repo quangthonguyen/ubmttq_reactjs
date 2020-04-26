@@ -8,30 +8,30 @@ import Typography from '@material-ui/core/Typography';
 import Account from './account';
 import Drawer from '../Drawer';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1
+    zIndex: theme.zIndex.drawer + 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   grow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   toolappBar: {
     paddingLeft: theme.spacing(2),
-    paddingRight: '0px'
-  }
+    paddingRight: '0px',
+  },
 }));
 
 export default function Navbar() {
   // use State
   const [open, setOpen] = React.useState(true);
   const handleDrawerToggle = () => {
-    setOpen(state => !state);
+    setOpen((state) => !state);
   };
   //style
   const classes = useStyles();
@@ -59,7 +59,8 @@ export default function Navbar() {
               width="28"
             />
             <Typography variant="subtitle2" noWrap>
-              Ủy ban mặt trận tổ quốc Q.Bình Thạnh
+              Ủy ban mặt trận tổ quốc Quận Bình Thạnh
+              {/* {React.version} */}
             </Typography>
             {/* Search Component */}
 

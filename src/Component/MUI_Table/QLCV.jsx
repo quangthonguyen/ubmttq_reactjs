@@ -245,9 +245,10 @@ function QLCV(props) {
                     <div style={{ display: 'flex' }}>
                       <DetailQLCVDialog detailQLCV={tableMeta.rowData} />
 
-                      {!(tableMeta.rowData[14] === 'Hoàn thành') && (
-                        <FinishQLCVDialog FinishQLCV={tableMeta.rowData} />
-                      )}
+                      {!(
+                        tableMeta.rowData[14] === 'Hoàn thành' ||
+                        tableMeta.rowData[12] === 'Hết hạn'
+                      ) && <FinishQLCVDialog FinishQLCV={tableMeta.rowData} />}
                     </div>
                   </>
                 );
@@ -271,6 +272,7 @@ function QLCV(props) {
           },
           onRowClick: (rowData, rowMeta) => {
             rowData[13] &&
+              rowData[14] !== 'Gần hết hạn' &&
               dispatch({
                 type: 'UPDATE_NOTIFICATION_QLCV',
                 payload: {
