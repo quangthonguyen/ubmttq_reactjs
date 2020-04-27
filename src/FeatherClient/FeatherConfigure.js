@@ -4,9 +4,9 @@ import feathers from '@feathersjs/client';
 // import rest from '@feathersjs/rest-client';
 // import Axios from 'axios';
 
-const socket = io('localhost:3030');
+//const socket = io('localhost:3030');
 // const socket = io('https://ubmttq.herokuapp.com/');
-// const socket = io('https://restapiubmt.herokuapp.com/');
+ const socket = io('https://restapiubmt.herokuapp.com/');
 const featherClient = feathers();
 
 featherClient.configure(feathers.socketio(socket, { timeout: 300000 }));
