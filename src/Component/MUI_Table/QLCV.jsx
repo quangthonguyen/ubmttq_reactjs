@@ -8,24 +8,24 @@ import { withStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { Box } from '@material-ui/core';
 
-const formatDate = str => {
+const formatDate = (str) => {
   const time = new Date(str);
   return `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear()}`;
 };
 
 const customStyles = {
   BusinessAnalystRow: {
-    '& td': { backgroundColor: '#EEE' }
+    '& td': { backgroundColor: '#EEE' },
   },
   Row: {
-    '& td': { backgroundColor: '#FAA' }
-  }
+    '& td': { backgroundColor: '#FAA' },
+  },
 };
 
 function QLCV(props) {
   //useSelector
-  const listQLCV = useShallowEqualSelector(state => state.listQLCV);
-  const listUsers = useShallowEqualSelector(state => state.listUsers);
+  const listQLCV = useShallowEqualSelector((state) => state.listQLCV);
+  const listUsers = useShallowEqualSelector((state) => state.listUsers);
   const listQLCV2 = [...listQLCV];
   //use Dispatch
   const dispatch = useDispatch();
@@ -44,11 +44,12 @@ function QLCV(props) {
               empty: true,
               customBodyRender: (value, tableMeta, updateValue) => {
                 return (
-                  listQLCV2.findIndex(e => e['_id'] === tableMeta.rowData[1]) +
-                  1
+                  listQLCV2.findIndex(
+                    (e) => e['_id'] === tableMeta.rowData[1]
+                  ) + 1
                 ).toString();
-              }
-            }
+              },
+            },
           },
           {
             name: '_id',
@@ -57,24 +58,24 @@ function QLCV(props) {
               filter: false,
               sort: false,
               display: false,
-              viewColumns: false
-            }
+              viewColumns: false,
+            },
           },
           {
             name: 'soVb',
             label: 'Số VB',
             options: {
               filter: true,
-              sort: true
-            }
+              sort: true,
+            },
           },
           {
             name: 'loaiVb',
             label: 'loại Vb',
             options: {
               filter: true,
-              sort: true
-            }
+              sort: true,
+            },
           },
           {
             name: 'donViGui',
@@ -82,8 +83,8 @@ function QLCV(props) {
             options: {
               filter: true,
               sort: true,
-              filterType: 'textField'
-            }
+              filterType: 'textField',
+            },
           },
           {
             name: 'ngayDen',
@@ -94,8 +95,8 @@ function QLCV(props) {
               filterType: 'textField',
               customBodyRender: (value, tableMeta, updateValue) => {
                 return formatDate(tableMeta.rowData[5]);
-              }
-            }
+              },
+            },
           },
 
           {
@@ -115,8 +116,8 @@ function QLCV(props) {
                     );
                   }
                 }
-              }
-            }
+              },
+            },
           },
           {
             name: 'thoiHan',
@@ -129,8 +130,8 @@ function QLCV(props) {
                 return tableMeta.rowData[7]
                   ? formatDate(tableMeta.rowData[7])
                   : '';
-              }
-            }
+              },
+            },
           },
           {
             name: 'noiDungVb',
@@ -139,8 +140,8 @@ function QLCV(props) {
               filter: true,
               sort: true,
               display: true,
-              filterType: 'textField'
-            }
+              filterType: 'textField',
+            },
           },
           {
             name: 'noiDungLd',
@@ -149,8 +150,8 @@ function QLCV(props) {
               filter: true,
               sort: true,
               display: false,
-              filterType: 'textField'
-            }
+              filterType: 'textField',
+            },
           },
           {
             name: 'fileName',
@@ -159,8 +160,8 @@ function QLCV(props) {
               filter: true,
               sort: true,
               display: false,
-              filterType: 'textField'
-            }
+              filterType: 'textField',
+            },
           },
           {
             name: 'fileId',
@@ -169,8 +170,8 @@ function QLCV(props) {
               filter: false,
               sort: false,
               display: false,
-              viewColumns: false
-            }
+              viewColumns: false,
+            },
           },
           {
             name: 'trangThai',
@@ -208,8 +209,8 @@ function QLCV(props) {
                       (tableMeta.rowData[12] === 'Đã gửi' && 'NEW')}
                   </Box>
                 );
-              }
-            }
+              },
+            },
           },
 
           {
@@ -219,8 +220,8 @@ function QLCV(props) {
               filter: false,
               sort: false,
               display: false,
-              viewColumns: false
-            }
+              viewColumns: false,
+            },
           },
           {
             name: 'custom',
@@ -229,8 +230,8 @@ function QLCV(props) {
               filter: false,
               sort: false,
               display: false,
-              viewColumns: false
-            }
+              viewColumns: false,
+            },
           },
           {
             name: '',
@@ -246,15 +247,15 @@ function QLCV(props) {
                       <DetailQLCVDialog detailQLCV={tableMeta.rowData} />
 
                       {!(
-                        tableMeta.rowData[14] === 'Hoàn thành' ||
+                        tableMeta.rowData[12] === 'Hoàn thành' ||
                         tableMeta.rowData[12] === 'Hết hạn'
                       ) && <FinishQLCVDialog FinishQLCV={tableMeta.rowData} />}
                     </div>
                   </>
                 );
-              }
-            }
-          }
+              },
+            },
+          },
         ]}
         options={{
           filterType: 'multiselect',
@@ -262,12 +263,12 @@ function QLCV(props) {
           print: false,
           download: false,
           responsive: 'scrollMaxHeight',
-          setRowProps: row => {
+          setRowProps: (row) => {
             return {
               className: classnames({
                 [props.classes.BusinessAnalystRow]: row[13] === true,
-                [props.classes.Row]: row[14] === 'Gần hết hạn'
-              })
+                [props.classes.Row]: row[14] === 'Gần hết hạn',
+              }),
             };
           },
           onRowClick: (rowData, rowMeta) => {
@@ -277,10 +278,13 @@ function QLCV(props) {
                 type: 'UPDATE_NOTIFICATION_QLCV',
                 payload: {
                   id: rowData[1],
-                  updateField: { notificationQLCV: false, trangThai: 'Đã nhận' }
-                }
+                  updateField: {
+                    notificationQLCV: false,
+                    trangThai: 'Đã nhận',
+                  },
+                },
               });
-          }
+          },
         }}
       />
     </>

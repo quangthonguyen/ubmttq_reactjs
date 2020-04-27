@@ -8,18 +8,18 @@ import {
   creatCVD,
   updateCVD,
   updatedCVD,
-  deleteCVD
+  deleteCVD,
 } from '../Redux/Slice/listCVD';
 import {
   getListCVDI,
   creatCVDI,
   updateCVDI,
-  deleteCVDI
+  deleteCVDI,
 } from '../Redux/Slice/listCVDI';
 import {
   getListQLCV,
   creatQLCV,
-  updateQLCV
+  updateQLCV,
   // deleteQLCV
 } from '../Redux/Slice/listQLCV';
 
@@ -35,26 +35,26 @@ function* fetchUserJwt(action) {
     const data5 = yield call([vbd, vbd.find], {
       query: {
         nguoiThucHien: {
-          $in: [data.user['_id']]
+          $in: [data.user['_id']],
         },
         $sort: {
-          notificationQLCV: 1
-        }
-      }
+          notificationQLCV: 1,
+        },
+      },
     });
     console.log(data5);
     yield all([
       put(login(data.user)),
       put(getList(data2.data)),
-      put(getListQLCV(data5.data))
+      put(getListQLCV(data5.data)),
     ]);
     if (data.user.qlCVD) {
       const data3 = yield call([vbd, vbd.find], {
         query: {
           $sort: {
-            notification: 1
-          }
-        }
+            notification: 1,
+          },
+        },
       });
       yield put(getListCVD(data3.data));
     }
@@ -70,8 +70,8 @@ function* fetchUserJwt(action) {
             options: {
               key: new Date().getTime() + Math.random(),
               variant: 'warning',
-              autoHideDuration: 6000
-            }
+              autoHideDuration: 6000,
+            },
           })
         );
       }
@@ -95,7 +95,7 @@ function* UserLogin(action) {
     const data = yield call(featherClient.authenticate, {
       strategy: 'local',
       email: action.payload.email,
-      password: action.payload.password
+      password: action.payload.password,
     });
     yield put(login(data.user));
     yield put(
@@ -103,8 +103,8 @@ function* UserLogin(action) {
         message: `Xin chào ${data.user.lastName} ${data.user.fristName} ! `,
         options: {
           key: new Date().getTime() + Math.random(),
-          variant: 'info'
-        }
+          variant: 'info',
+        },
       })
     );
   } catch (error) {
@@ -113,8 +113,8 @@ function* UserLogin(action) {
         message: 'Email hoặc password không chính xác!',
         options: {
           key: new Date().getTime() + Math.random(),
-          variant: 'error'
-        }
+          variant: 'error',
+        },
       })
     );
     console.log(error);
@@ -148,8 +148,8 @@ function* UsersAddQLCV(action) {
         options: {
           key: new Date().getTime() + Math.random(),
           variant: 'info',
-          autoHideDuration: 3000
-        }
+          autoHideDuration: 3000,
+        },
       })
     );
   } catch (error) {
@@ -199,8 +199,21 @@ function* UpdateUsersList(action) {
 //Finish QLCV
 function* UserFinishQLCV(action) {
   try {
-    yield call([vbd, vbd.patch], action.payload.id, action.payload.updateField);
+    yield call([vbd, vbd.patch], action.payload.id, {
+      notificationQLCV: false,
+      ...action.payload.updateField,
+    });
     yield put(updateQLCV(action.payload));
+    yield put(
+      updateQLCV({
+        id: action.payload.id,
+        updateField: {
+          custom: 'Hoàn thành',
+          notificationQLCV: false,
+          ...action.payload.updateField,
+        },
+      })
+    );
   } catch (error) {
     console.log(error);
   }
@@ -268,8 +281,8 @@ function* UsersUpdatedCVD(action) {
           options: {
             key: new Date().getTime() + Math.random(),
             variant: 'success',
-            autoHideDuration: 3000
-          }
+            autoHideDuration: 3000,
+          },
         })
       );
     }
